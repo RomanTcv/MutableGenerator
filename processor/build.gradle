@@ -1,0 +1,22 @@
+apply plugin: 'kotlin'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'com.github.dcendents.android-maven'
+group='com.github.R12rus'
+
+dependencies {
+    def kotlinPoet = "1.6.0"
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation project(':annotations')
+
+    implementation "com.squareup:kotlinpoet:$kotlinPoet"
+    implementation "com.squareup:kotlinpoet-metadata-specs:$kotlinPoet"
+    implementation "com.squareup:kotlinpoet-metadata-specs:$kotlinPoet"
+    implementation "com.squareup:kotlinpoet-classinspector-elements:$kotlinPoet"
+
+    implementation 'com.google.auto.service:auto-service:1.0-rc7'
+    implementation 'com.google.auto.service:auto-service-annotations:1.0-rc7'
+
+    implementation 'net.ltgt.gradle.incap:incap:0.3'
+    kapt 'net.ltgt.gradle.incap:incap-processor:0.3'
+}
