@@ -7,14 +7,15 @@ import javax.lang.model.util.Elements
 internal const val MUTABLE = "Mutable"
 
 internal fun Element.fileName(): String {
+    val annotation = getAnnotation(Mutable::class.java)
+    if (annotation.className.isNotBlank()) return annotation.className
+
     val name = this.simpleName.toString()
-    val withPrefixName = getAnnotation(Mutable::class.java).withPrefixName
-    if (withPrefixName) return "Mutable" + name.removePrefix(MUTABLE)
-    return name.removeSuffix(MUTABLE) + MUTABLE
+    if (annotation.mutableSuffix) return name.removeSuffix(MUTABLE) + MUTABLE
+
+    return MUTABLE + name.removePrefix(MUTABLE)
 }
 
-internal fun Element.getPackage(elements: Elements): String {
-    return elements.packageOf(this)
-}
+internal fun Element.getPackage(elements: Elements): String = elements.packageOf(this)
 
 internal fun Elements.packageOf(element: Element) = getPackageOf(element).toString()
