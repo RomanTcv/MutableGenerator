@@ -39,7 +39,7 @@ allprojects {
 **Step 2.** Add the dependency
 ```
 dependencies {
-    implementation 'com.github.R12rus.MutableGenerator:annotations:0.0.1'
-    kapt 'com.github.R12rus.MutableGenerator:processor:0.0.1'
+    implementation 'com.github.R12rus.MutableGenerator:annotations:0.0.2'
+    kapt 'com.github.R12rus.MutableGenerator:processor:0.0.2'
 }
 ```
