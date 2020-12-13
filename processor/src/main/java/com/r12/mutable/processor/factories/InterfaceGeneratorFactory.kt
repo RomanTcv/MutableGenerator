@@ -4,6 +4,7 @@ import com.r12.mutable.processor.entities.Field
 import com.r12.mutable.processor.extensions.fileName
 import com.r12.mutable.processor.extensions.formatType
 import com.r12.mutable.processor.extensions.getPackage
+import com.r12.mutable.processor.extensions.isDataClass
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.metadata.ImmutableKmClass
 import com.squareup.kotlinpoet.metadata.KotlinPoetMetadataPreview
@@ -23,13 +24,14 @@ internal class InterfaceGeneratorFactory(
 
         val fields = element.getFields()
         val isAbstract = element.isAbstract()
+        val isDataClass = !isAbstract && element.isDataClass()
 
         val typeSpec = TypeSpec
             .classBuilder(fileName)
             .addSuperinterface(kmClass.superInterface())
             .addProperties(fields.map(Field::toPropertySpec))
             .primaryConstructor(fields.generateConstructor())
-            .addModifiers(kmClass.getModifiers(isAbstract))
+            .addModifiers(kmClass.getModifiers(isAbstract, isDataClass))
             .addExtension(element, fullPath, isAbstract)
             .build()
 
@@ -87,10 +89,15 @@ internal class InterfaceGeneratorFactory(
         return this
     }
 
-    private fun ImmutableKmClass.getModifiers(isAbstract: Boolean): List<KModifier> {
+    private fun ImmutableKmClass.getModifiers(isAbstract: Boolean, isDataClass: Boolean): List<KModifier> {
         val list = mutableListOf<KModifier>()
 
-        if (isAbstract) list.add(KModifier.ABSTRACT) else list.add(KModifier.OPEN)
+        val kModifier = if (isAbstract) {
+            KModifier.ABSTRACT
+        } else {
+            if (isDataClass) KModifier.DATA else KModifier.OPEN
+        }
+        list.add(kModifier)
         if (isInternal) list.add(KModifier.INTERNAL)
 
         return list

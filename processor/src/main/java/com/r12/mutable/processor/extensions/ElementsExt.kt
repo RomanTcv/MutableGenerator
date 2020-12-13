@@ -19,3 +19,5 @@ internal fun Element.fileName(): String {
 internal fun Element.getPackage(elements: Elements): String = elements.packageOf(this)
 
 internal fun Elements.packageOf(element: Element) = getPackageOf(element).toString()
+
+internal fun Element.isDataClass(): Boolean = getAnnotation(Mutable::class.java).dataClass
